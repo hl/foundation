@@ -1,0 +1,32 @@
+<.header>
+  Collection <%= @collection.id %>
+  <:subtitle>This is a collection record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/studio/collections/#{@collection}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit collection</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @collection.name %></:item>
+  <:item title="Description"><%= @collection.description %></:item>
+</.list>
+
+<.back navigate={~p"/studio/collections"}>Back to collections</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="collection-modal"
+  show
+  on_cancel={JS.patch(~p"/studio/collections/#{@collection}")}
+>
+  <.live_component
+    module={FoundationWeb.CollectionLive.FormComponent}
+    id={@collection.id}
+    title={@page_title}
+    action={@live_action}
+    collection={@collection}
+    patch={~p"/studio/collections/#{@collection}"}
+  />
+</.modal>
